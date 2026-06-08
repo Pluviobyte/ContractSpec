@@ -1,0 +1,17 @@
+{
+  "name": "contractspec",
+  "version": "0.1.0",
+  "description": "OpenSpec-compatible contract-driven workflow for AI full-stack development",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "contractspec": "./bin/contractspec.js"
+  },
+  "scripts": {
+    "validate": "node bin/contractspec.js validate .",
+    "test": "node bin/contractspec.js validate ."
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}

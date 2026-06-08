@@ -1,0 +1,169 @@
+name: contract-spec
+version: 1
+description: OpenSpec-compatible workflow for AI full-stack development contracts
+artifacts:
+  - id: proposal
+    generates: proposal.md
+    description: Intent, scope, capabilities, and impact
+    template: proposal.md
+    instruction: |
+      Create the proposal document that establishes why this change exists and what it changes.
+      Keep implementation detail out of this file.
+      Identify affected capabilities because specs and contracts depend on them.
+    requires: []
+
+  - id: product
+    generates: contracts/product.md
+    description: Product intent, user outcomes, scope, and acceptance criteria
+    template: product.md
+    instruction: |
+      Create contracts/product.md.
+      Define the user, goal, workflow, success behavior, failure behavior, non-goals, and acceptance criteria.
+    requires:
+      - proposal
+
+  - id: domain
+    generates: contracts/domain.md
+    description: Domain entities, rules, permissions, state machines, and invariants
+    template: domain.md
+    instruction: |
+      Create contracts/domain.md.
+      Define entities, glossary, business rules, permissions, state machines, invariants, and edge cases.
+    requires:
+      - product
+
+  - id: data
+    generates: contracts/data-model.md
+    description: Data fields, types, constraints, lifecycle, migration, and privacy notes
+    template: data-model.md
+    instruction: |
+      Create contracts/data-model.md.
+      Define entities, fields, types, required/optional/nullability, defaults, constraints, relationships, lifecycle, migration notes, and privacy notes.
+    requires:
+      - domain
+
+  - id: api
+    generates: contracts/api.md
+    description: API operations, auth, requests, responses, errors, and compatibility
+    template: api.md
+    instruction: |
+      Create contracts/api.md.
+      Define endpoints, auth, request params/body, response shape, status codes, pagination/filtering/sorting, idempotency, and compatibility.
+    requires:
+      - data
+
+  - id: errors
+    generates: contracts/errors.md
+    description: Error envelope, codes, status mapping, retryability, and recovery
+    template: errors.md
+    instruction: |
+      Create contracts/errors.md.
+      Define error envelope, stable error codes, status mapping, field errors, retryability, user-facing messages, logging/redaction, and recovery behavior.
+    requires:
+      - api
+
+  - id: ui-flow
+    generates: contracts/ui-flow.md
+    description: User entry points, routes, actions, navigation, validation, and accessibility
+    template: ui-flow.md
+    instruction: |
+      Create contracts/ui-flow.md.
+      Define routes, entry points, user actions, navigation, client-side validation, and accessibility expectations.
+    requires:
+      - product
+      - api
+      - errors
+
+  - id: ui-states
+    generates: contracts/ui-states.md
+    description: UI states, state transitions, disabled states, and accessibility expectations
+    template: ui-states.md
+    instruction: |
+      Create contracts/ui-states.md.
+      Define loading, empty, success, error, unauthorized, forbidden, submitting, validation error, disabled, and retry states.
+      If a state does not apply, explain why.
+    requires:
+      - ui-flow
+      - errors
+
+  - id: specs
+    generates: "specs/**/*.md"
+    description: Behavior delta specs using OpenSpec requirement format
+    template: spec.md
+    instruction: |
+      Create behavior specs for each affected capability.
+      Use delta sections: ADDED, MODIFIED, REMOVED, or RENAMED Requirements.
+      Requirements describe observable behavior, not internal implementation.
+      Every requirement MUST include at least one #### Scenario.
+    requires:
+      - proposal
+      - product
+      - domain
+      - data
+      - api
+      - errors
+      - ui-flow
+      - ui-states
+
+  - id: design
+    generates: design.md
+    description: Technical design and architecture decisions
+    template: design.md
+    instruction: |
+      Create the technical design.
+      Reference the contract pack and specs.
+      The design may explain implementation choices, but it must not contradict contracts.
+    requires:
+      - proposal
+      - product
+      - domain
+      - data
+      - api
+      - errors
+      - ui-flow
+      - ui-states
+      - specs
+
+  - id: tests
+    generates: contracts/test-contract.md
+    description: Requirement-to-test matrix and required test cases
+    template: test-contract.md
+    instruction: |
+      Create contracts/test-contract.md.
+      Map product acceptance criteria and spec scenarios to backend, frontend, integration, E2E, and manual checks.
+    requires:
+      - specs
+      - design
+
+  - id: verification
+    generates: verification.md
+    description: Verification plan and evidence log
+    template: verification.md
+    instruction: |
+      Create a verification plan and evidence log.
+      It must map contracts and scenarios to commands, manual checks, evidence, and results.
+      During or after implementation, update it with real evidence.
+    requires:
+      - tests
+
+  - id: tasks
+    generates: tasks.md
+    description: Vertical-slice implementation checklist
+    template: tasks.md
+    instruction: |
+      Create implementation tasks as vertical slices.
+      Do not split work into "all backend" then "all frontend".
+      Each slice should connect data/API/UI/tests where relevant.
+      Every task MUST use checkbox format: - [ ] X.Y Task.
+    requires:
+      - verification
+
+apply:
+  requires:
+    - tasks
+  tracks: tasks.md
+  instruction: |
+    Read proposal.md, contracts/**, specs/**, design.md, tasks.md, and verification.md.
+    Implement tasks as vertical slices and mark checkboxes complete as you finish them.
+    Do not invent API fields, UI states, errors, or data rules outside the contract pack.
+    If implementation reveals a contract gap, update the artifact first, then continue.
