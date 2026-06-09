@@ -11,6 +11,7 @@
 | errors |  | pending |
 | ui-flow |  | pending |
 | ui-states |  | pending |
+| bindings |  | pending |
 | test-contract |  | pending |
 
 ## Scenario Coverage
@@ -22,7 +23,9 @@
 ## Commands
 
 ```bash
-# Add the exact commands run here.
+contractspec validate . --change <change-name>
+contractspec check-bindings . --change <change-name>
+# Add project-specific test/typecheck/build commands here.
 ```
 
 ## Evidence
@@ -31,4 +34,4 @@
 
 ## Results
 
-<!-- Final pass/fail summary and known residual risks. -->
+<!-- Final pass/fail summary, warnings, known gaps, and residual risks. -->

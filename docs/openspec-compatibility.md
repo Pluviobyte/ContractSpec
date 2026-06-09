@@ -14,6 +14,7 @@ ContractSpec is designed as an OpenSpec-compatible schema bundle, not a fork of 
 ## What ContractSpec Adds
 
 - `contracts/` as a full-stack binding layer.
+- `contracts/bindings.md` as the bridge from Markdown contracts to executable schema, code, tests, mocks, and evidence.
 - `verification.md` as an evidence log.
 - A schema that asks agents to generate contracts before specs/design/tasks.
 - A small validator for contract completeness.
@@ -47,3 +48,13 @@ Tasks must use checkbox format so agents can track completion:
 - [ ] 1.1 Implement happy path
 - [x] 1.2 Add tests
 ```
+
+## ContractSpec Source-Of-Truth Rule
+
+`contracts/` is change-local. It should not become a second permanent spec library.
+
+Long-term facts live in:
+
+- `openspec/specs/` for current behavior
+- executable schema/code/tests for enforceable behavior
+- archived changes for historical evidence

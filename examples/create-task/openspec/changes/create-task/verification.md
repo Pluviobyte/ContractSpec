@@ -11,6 +11,7 @@
 | errors | Validation/auth tests planned | pending |
 | ui-flow | E2E happy path planned | pending |
 | ui-states | Component/E2E state checks planned | pending |
+| bindings | Binding map created in contracts/bindings.md | pending |
 | test-contract | Test list mapped below | pending |
 
 ## Scenario Coverage
@@ -24,6 +25,8 @@
 ## Commands
 
 ```bash
+node bin/contractspec.js validate examples/create-task
+node bin/contractspec.js check-bindings examples/create-task
 npm test
 npm run typecheck
 npm run build

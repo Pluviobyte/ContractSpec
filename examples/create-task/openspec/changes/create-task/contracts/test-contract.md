@@ -32,3 +32,15 @@
 | errors | Validation/auth failure tests |
 | ui-states | Component or E2E checks |
 | product | Manual or E2E happy path |
+
+## Failing Test Gate
+
+Before implementation, create the tests listed in `contracts/bindings.md`.
+
+Expected initial result:
+
+- API tests fail because `POST /api/tasks` is not implemented.
+- Frontend tests fail because `CreateTaskForm` behavior is not implemented.
+- E2E test fails because the full path is not implemented.
+
+AI agents must not change tests to match an incorrect implementation.

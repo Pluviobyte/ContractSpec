@@ -36,6 +36,7 @@ ContractSpec makes these facts explicit before implementation:
 | Errors | Error envelope, codes, field errors, recovery behavior |
 | UI flow | Routes, user actions, navigation, validation |
 | UI states | Loading, empty, success, error, unauthorized, submitting |
+| Bindings | Maps contracts to executable schema, code, mocks, tests, and evidence |
 | Test contract | Required tests and manual acceptance checks |
 
 ## Human and AI Roles
@@ -65,6 +66,34 @@ Design describes implementation choices.
 
 Tasks describe execution.
 
+Bindings connect contracts to executable engineering artifacts.
+
+Tests turn contracts into executable constraints.
+
 Verification proves the implementation matches the contracts.
 
 Keeping those layers separate is the move. A little boring, a lot useful.
+
+## Source Of Truth
+
+ContractSpec should not create a second permanent source of truth.
+
+- `openspec/specs/` describes current system behavior.
+- `contracts/` constrains an active change.
+- `contracts/bindings.md` maps contracts to executable schema, code, tests, mocks, and evidence.
+- Code, schema, and tests enforce the contract.
+- Archive keeps historical evidence and merges behavior specs.
+
+## Tests As Executable Contracts
+
+ContractSpec treats tests as executable contracts.
+
+A contract is not complete until:
+
+1. Requirements are written in OpenSpec specs.
+2. Cross-layer contracts are written in `contracts/`.
+3. Executable bindings are mapped in `contracts/bindings.md`.
+4. Test expectations are mapped in `contracts/test-contract.md`.
+5. Failing tests are created before implementation.
+6. Implementation passes those tests.
+7. `verification.md` records the evidence.

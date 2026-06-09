@@ -1,6 +1,6 @@
 {
   "name": "contractspec",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "OpenSpec-compatible contract-driven workflow for AI full-stack development",
   "type": "module",
   "license": "MIT",
@@ -9,7 +9,10 @@
   },
   "scripts": {
     "validate": "node bin/contractspec.js validate .",
-    "test": "node bin/contractspec.js validate ."
+    "validate:strict": "node bin/contractspec.js validate . --strict",
+    "check-bindings": "node bin/contractspec.js check-bindings .",
+    "doctor": "node bin/contractspec.js doctor .",
+    "test": "npm run validate && npm run validate:strict && npm run check-bindings"
   },
   "engines": {
     "node": ">=20.19.0"

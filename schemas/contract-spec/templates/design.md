@@ -10,7 +10,11 @@
 
 ## Contract Mapping
 
-<!-- Explain how product, domain, data, API, error, UI, and test contracts map to implementation areas. -->
+<!-- Explain how product, domain, data, API, error, UI, binding, and test contracts map to implementation areas. -->
+
+## Executable Bindings
+
+<!-- Reference contracts/bindings.md and explain which schema/code/test files are existing versus planned. -->
 
 ## Decisions
 
@@ -24,6 +28,12 @@
 
 ```text
 user action -> frontend state -> API request -> backend rule -> response -> UI state
+```
+
+## Test-First Flow
+
+```text
+contracts/test-contract.md -> failing tests -> implementation -> passing tests -> verification.md
 ```
 
 ## Risks / Trade-Offs

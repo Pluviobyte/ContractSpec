@@ -1,5 +1,5 @@
 name: contract-spec
-version: 1
+version: 2
 description: OpenSpec-compatible workflow for AI full-stack development contracts
 artifacts:
   - id: proposal
@@ -86,6 +86,22 @@ artifacts:
       - ui-flow
       - errors
 
+  - id: bindings
+    generates: contracts/bindings.md
+    description: Executable binding map from Markdown contracts to real schema, code, tests, and evidence
+    template: bindings.md
+    instruction: |
+      Create contracts/bindings.md.
+      Map each Markdown contract to executable source files, generated files, mocks, tests, and verification evidence.
+      Include API schemas, shared types, validators, generated clients, database schemas, UI state files, mocks, and tests where applicable.
+      If an executable binding does not exist yet, mark it planned and include the intended path.
+    requires:
+      - data
+      - api
+      - errors
+      - ui-flow
+      - ui-states
+
   - id: specs
     generates: "specs/**/*.md"
     description: Behavior delta specs using OpenSpec requirement format
@@ -104,6 +120,7 @@ artifacts:
       - errors
       - ui-flow
       - ui-states
+      - bindings
 
   - id: design
     generates: design.md
@@ -122,9 +139,10 @@ artifacts:
       - errors
       - ui-flow
       - ui-states
+      - bindings
       - specs
 
-  - id: tests
+  - id: test-contract
     generates: contracts/test-contract.md
     description: Requirement-to-test matrix and required test cases
     template: test-contract.md
@@ -134,6 +152,7 @@ artifacts:
     requires:
       - specs
       - design
+      - bindings
 
   - id: verification
     generates: verification.md
@@ -144,7 +163,7 @@ artifacts:
       It must map contracts and scenarios to commands, manual checks, evidence, and results.
       During or after implementation, update it with real evidence.
     requires:
-      - tests
+      - test-contract
 
   - id: tasks
     generates: tasks.md
@@ -166,4 +185,6 @@ apply:
     Read proposal.md, contracts/**, specs/**, design.md, tasks.md, and verification.md.
     Implement tasks as vertical slices and mark checkboxes complete as you finish them.
     Do not invent API fields, UI states, errors, or data rules outside the contract pack.
-    If implementation reveals a contract gap, update the artifact first, then continue.
+    Do not implement first and then write tests that merely mirror the implementation.
+    If implementation reveals a contract gap, update the relevant contracts, specs, design, and test-contract first, then continue.
+    Update verification.md with real commands, evidence, warnings, and results.

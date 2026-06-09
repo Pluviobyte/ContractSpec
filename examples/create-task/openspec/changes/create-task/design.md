@@ -22,6 +22,7 @@ The application has authenticated users and a task list. This change adds the fi
 - `contracts/api.md` maps to `POST /api/tasks`.
 - `contracts/errors.md` maps to validation, auth, and server error handling.
 - `contracts/ui-flow.md` and `contracts/ui-states.md` map to the create form.
+- `contracts/bindings.md` maps Markdown contracts to planned executable schema, code, mocks, tests, and evidence.
 - `contracts/test-contract.md` maps to API, component, and E2E checks.
 
 ## Decisions
@@ -31,6 +32,12 @@ The application has authenticated users and a task list. This change adds the fi
 - Choice: Use one validation schema for backend request validation and frontend form validation when the stack allows it.
 - Rationale: Reduces drift between client and server.
 - Alternatives considered: Separate frontend and backend validators, which is more flexible but easier to drift.
+
+### Decision: Tests as executable contracts
+
+- Choice: Generate failing API and UI tests from `contracts/test-contract.md` before implementation.
+- Rationale: Prevents AI from writing tests that merely mirror the implementation.
+- Alternatives considered: Implementation-first testing, which is faster initially but weaker at preventing drift.
 
 ### Decision: Field-level validation envelope
 
@@ -42,6 +49,12 @@ The application has authenticated users and a task list. This change adds the fi
 
 ```text
 create form -> POST /api/tasks -> validate -> persist task -> 201 response -> navigate to detail
+```
+
+## Binding Flow
+
+```text
+contracts/*.md -> contracts/bindings.md -> schema/types/tests -> implementation -> verification.md
 ```
 
 ## Risks / Trade-Offs
